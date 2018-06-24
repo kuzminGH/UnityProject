@@ -13,6 +13,7 @@ public class HeroRabit : MonoBehaviour
     public float JumpSpeed = 2f;
     float value;
 
+    bool isBigRabit = false;
 
     Rigidbody2D myBody = null;
     // Use this for initialization
@@ -31,9 +32,18 @@ public class HeroRabit : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Animator animator = GetComponent<Animator>();
+        if (animator.GetBool("death"))
+        {
+            //якщо анімація ще не змінилась або якщо анімація смерті завершила свою роботу
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Die") || animator.GetCurrentAnimatorStateInfo(0).length > animator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
+            animator.SetBool("death", false);
+            LevelControler.current.onRabitDeath(this);
+            return;
+        }
+
         //[-1, 1]
         float value = Input.GetAxis("Horizontal");
-        Animator animator = GetComponent<Animator>();
         if (Mathf.Abs(value) > 0)
         {
             animator.SetBool("run", true);
@@ -106,5 +116,14 @@ public class HeroRabit : MonoBehaviour
         }
     }
 
+    public bool isBig()
+    {
+        return isBigRabit;
+    }
+
+    public void setBig(bool b)
+    {
+        isBigRabit = b;
+    }
 
 }
