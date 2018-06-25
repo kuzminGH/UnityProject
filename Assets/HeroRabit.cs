@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HeroRabit : MonoBehaviour
 {
+    public static HeroRabit current;
 
     public float speed = 1;
     bool isGrounded = false;
@@ -16,6 +17,12 @@ public class HeroRabit : MonoBehaviour
     bool isBigRabit = false;
 
     Rigidbody2D myBody = null;
+
+    void Awake()
+    {
+        current = this;
+    }
+
     // Use this for initialization
     void Start()
     {
